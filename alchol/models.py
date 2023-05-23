@@ -26,3 +26,6 @@ class Alchol(models.Model):
     ]
     taste = models.CharField(choices=tastes, max_length=4)
     image = models.ImageField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.name)

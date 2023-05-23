@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
     
     'rest_framework',
     'rest_framework_simplejwt',
@@ -141,6 +142,11 @@ REST_FRAMEWORK = {
     'UTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
+}
+
+SWAGGER_SETTINGS = {
+    'JSON_EDITOR': True,
+    'SHOW_REQUEST_HEADERS': True,
 }
 
 AUTH_USER_MODEL = 'user.User'

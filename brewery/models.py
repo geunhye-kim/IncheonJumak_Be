@@ -14,3 +14,6 @@ class Brewery(models.Model):
     experience = models.BooleanField()
     experience_hour = models.TimeField(null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.name)
