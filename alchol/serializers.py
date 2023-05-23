@@ -6,3 +6,8 @@ class AlcholSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alchol
         fields = "__all__"
+
+class AlcholListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alchol
+        fields = "__all__"

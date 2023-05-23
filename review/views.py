@@ -18,10 +18,10 @@ class ReviewView(APIView):
     
     @swagger_auto_schema(request_body=ReviewCreateSerializer)
     def post(self, request):
-        # print(request.user)
+        print(request.user)
         serializer = ReviewCreateSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -35,11 +35,15 @@ class ReviewDetailView(APIView):
     @swagger_auto_schema(request_body=ReviewCreateSerializer)
     def put(self, request, review_id):
         review = get_object_or_404(Review, id=review_id)
-        # if request.user == review.user:
-        serializer = ReviewCreateSerializer(review, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        print(request.user)
+        print(review.user)
+        if request.user == review.user:
+            serializer = ReviewCreateSerializer(review, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     # else:

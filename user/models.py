@@ -52,7 +52,7 @@ class User(AbstractBaseUser):
     )])
     nickname = models.CharField(max_length=20, unique=True)
     followings = models.ManyToManyField("self", symmetrical=False, through='Follow')
-    bookmark = models.ManyToManyField("alchol.Alchol", default=[], through='BookMark', related_name='bookmarks')
+    bookmark = models.ManyToManyField("alchol.Alchol", default=[], through='BookMark')
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -97,6 +97,6 @@ class Follow(models.Model):
     follower = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name='following')
 
 class BookMark(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name='bookmarked')
+    marked_user = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name='marked_user')
     alchol = models.ForeignKey('alchol.Alchol', on_delete=models.CASCADE, null=True)
 

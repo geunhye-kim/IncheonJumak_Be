@@ -17,6 +17,9 @@ from .serializers import UserCreateSerializer,CustomTokenObtainPairSerializer,Pr
 from rest_framework_simplejwt.views import (
     TokenObtainPairView
 )
+from .models import User,Verify, Follow, BookMark
+from django.template.loader import render_to_string
+from decouple import config
 from threading import Timer
 import re
 
@@ -70,10 +73,10 @@ class SendEmailView(APIView):
                 Verify.objects.create(email=email,code=code)
                 
                 timer = 600
-                Timer(timer,self.timer_delet,(email,)).start() #테스트코드에서 있으면 10분동안 멈춤
+                # Timer(timer,self.timer_delet,(email,)).start() #테스트코드에서 있으면 10분동안 멈춤
                 
-                #return Response({'code':code},status=status.HTTP_200_OK) #테스트용
-                return Response({'success':'success'},status=status.HTTP_200_OK)
+                return Response({'code':code},status=status.HTTP_200_OK) #테스트용
+                # return Response({'success':'success'},status=status.HTTP_200_OK)
 
 class VerificationEmailView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -183,7 +186,7 @@ class BookMarkView(APIView):
             bookmark.delete()
             return Response({"message":"북마크📌 취소"}, status=status.HTTP_200_OK)
         else:
-            BookMark.objects.create(id=request.user, alchol_id=alchol_id)
+            BookMark.objects.create(user_id=request.user, alchol_id=alchol_id)
             return Response({"message":"북마크📌"}, status=status.HTTP_200_OK)
 
 class BookMarkListView(APIView):

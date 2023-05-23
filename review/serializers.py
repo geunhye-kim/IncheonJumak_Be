@@ -3,10 +3,10 @@ from rest_framework import serializers
 from review.models import Review
 
 class ReviewSerializer(serializers.ModelSerializer):
-    # user = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
     
-    # def get_user(self, obj):
-    #     return obj.user.email
+    def get_user(self, obj):
+        return obj.user.email
     
     class Meta:
         model = Review
@@ -18,11 +18,11 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         fields = ("title", "image", "content")
         
 class ReviewListSerializer(serializers.ModelSerializer):
-    # user = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
     
-    # def get_user(self, obj):
-    #     return obj.user.email
+    def get_user(self, obj):
+        return obj.user.email
     
     class Meta:
         model = Review
-        fields = ("pk", "title", "image", "updated_at") 
+        fields = ("pk", "title", "image", "updated_at", "user") 
