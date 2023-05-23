@@ -52,7 +52,7 @@ class User(AbstractBaseUser):
     )])
     nickname = models.CharField(max_length=20, unique=True)
     followings = models.ManyToManyField("self", symmetrical=False, through='Follow')
-    bookmark = models.ManyToManyField("user.BookMark", default=[], through='BookMark')
+    bookmark = models.ManyToManyField("alchol.Alchol", default=[], through='BookMark', related_name='bookmarks')
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -86,13 +86,6 @@ class Profile(models.Model):
     profileimage=models.ImageField(upload_to='profile/', blank=True, null=True)
     introduction = models.TextField(blank=True, null=True)
     
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profileimage=models.ImageField(upload_to= 'profile/', blank=True, null=True)
-    introduction = models.TextField(blank=True, null=True)
-    
 class Verify(models.Model):
     email = models.EmailField()
     code = models.CharField(max_length=6)
@@ -104,6 +97,6 @@ class Follow(models.Model):
     follower = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name='following')
 
 class BookMark(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, null=True, related_name='bookmarked')
     alchol = models.ForeignKey('alchol.Alchol', on_delete=models.CASCADE, null=True)
 

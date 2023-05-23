@@ -16,6 +16,7 @@ from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+import my_settings
 
 
 # Quick-start development settings - unsuitable for production
@@ -88,12 +89,7 @@ WSGI_APPLICATION = 'incheonjumak.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = my_settings.DATABASES
 
 
 # Password validation
@@ -118,9 +114,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -153,7 +149,17 @@ REST_FRAMEWORK = {
 SWAGGER_SETTINGS = {
     'JSON_EDITOR': True,
     'SHOW_REQUEST_HEADERS': True,
+    'SECURITY_DEFINITIONS': {
+        'JWT': {
+            'name': 'Authorization',
+            'type': 'apiKey',
+            'in': 'header',
+        }
+    },
 }
+
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
 
 AUTH_USER_MODEL = 'user.User'
 

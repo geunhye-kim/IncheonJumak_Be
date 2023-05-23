@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from review.models import Review
 from review.serializers import ReviewSerializer, ReviewCreateSerializer, ReviewListSerializer
 
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 
 # Create your views here.
@@ -13,6 +15,8 @@ class ReviewView(APIView):
         reviews = Review.objects.all()
         serializer = ReviewListSerializer(reviews, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @swagger_auto_schema(request_body=ReviewCreateSerializer)
     def post(self, request):
         # print(request.user)
         serializer = ReviewCreateSerializer(data=request.data)
@@ -27,6 +31,8 @@ class ReviewDetailView(APIView):
         review = get_object_or_404(Review, id=review_id)
         serializer = ReviewSerializer(review)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @swagger_auto_schema(request_body=ReviewCreateSerializer)
     def put(self, request, review_id):
         review = get_object_or_404(Review, id=review_id)
         # if request.user == review.user:
@@ -38,17 +44,19 @@ class ReviewDetailView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     # else:
     #     return Response("권한이 없습니다.", status=status.HTTP_403_FORBIDDEN)
+    @swagger_auto_schema()
     def delete(self, request, review_id):
         review = get_object_or_404(Review, id=review_id)
-        # if request.user == review.user:
-        #     review.delete()
-        #     return Response("삭제되었습니다.", status=status.HTTP_204_NO_CONTENT)
-        # else:
-        #     return Response("권한이 없습니다.", status=status.HTTP_403_FORBIDDEN)
+        if request.user == review.user:
+            review.delete()
+            return Response("삭제되었습니다.", status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response("권한이 없습니다.", status=status.HTTP_403_FORBIDDEN)
     
 class CommentView(APIView):
     def get(self, request):
         pass
+
     def post(self, request):
         pass
     

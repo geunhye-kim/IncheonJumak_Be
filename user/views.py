@@ -22,7 +22,6 @@ import re
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg.utils import swagger_serializer_method
 
 EMAIL_REGEX = re.compile(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
 
@@ -76,7 +75,7 @@ class SendEmailView(APIView):
                 #return Response({'code':code},status=status.HTTP_200_OK) #테스트용
                 return Response({'success':'success'},status=status.HTTP_200_OK)
 
-class VerificationEmail(APIView):
+class VerificationEmailView(APIView):
     permission_classes = [permissions.AllowAny]
 
     @swagger_auto_schema(
@@ -85,7 +84,7 @@ class VerificationEmail(APIView):
             required=['email', 'code'],
             properties={
                 'email':openapi.Schema(type=openapi.TYPE_STRING),
-                'code':openapi.Schema(type=openapi.TYPE_INTEGER),
+                'code':openapi.Schema(type=openapi.TYPE_STRING),
             },
         ),
     )
@@ -105,7 +104,7 @@ class VerificationEmail(APIView):
             
                 
 
-class SignUp(APIView):
+class SignUpView(APIView):
     permission_classes = [permissions.AllowAny]
 
     @swagger_auto_schema(request_body=UserCreateSerializer)
